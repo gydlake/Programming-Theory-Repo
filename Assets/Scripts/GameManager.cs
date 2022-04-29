@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
         dog = GameObject.Find("Dog1");
         titleObj = GameObject.Find("Title");
 
-        Debug.Log("sheep 1 pos: " + sheep[1].transform.position);
+        //Debug.Log("sheep 1 pos: " + sheep[1].transform.position);
 
         beSheepSelected = false;
         haveMousePos = false;
@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        RotateInBoundary(dog);
+        //RotateInBoundary(dog);
 
         for (int i = 0; i < sheep.Length; i++)
         {
@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             mouseHitPos = GetMousePos();
-            Debug.Log("mouseHit: "+ mouseHitPos);
+            //Debug.Log("mouseHit: "+ mouseHitPos);
             haveMousePos=true;
         }
     }

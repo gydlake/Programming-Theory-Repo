@@ -61,6 +61,7 @@
     <Compile Include="Assets\Scripts\DogController.cs" />
     <Compile Include="Assets\Scripts\SheepController.cs" />
     <Compile Include="Assets\Scripts\Animal.cs" />
+    <Compile Include="Assets\Scripts\CloseGate.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

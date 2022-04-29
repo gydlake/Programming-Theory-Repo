@@ -39,7 +39,6 @@ public class DogController : MonoBehaviour
     void PointToGate()
     {
         Vector3 relativePos = entrance.transform.position - transform.position;
-
         // the second argument, upwards, defaults to Vector3.up
         Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.up);
         transform.rotation = Quaternion.Lerp(transform.rotation, rotation, 1f * Time.deltaTime);
