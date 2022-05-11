@@ -9,7 +9,13 @@ public abstract class Animal : MonoBehaviour
     private string description;
     private float age;
     private float speed;
+    
+    private void Start()
+    {
+        
+    }
 
+    
     public virtual void Idle()
     {
 
@@ -29,5 +35,7 @@ public abstract class Animal : MonoBehaviour
     {
 
     }
+
+    
 
 }

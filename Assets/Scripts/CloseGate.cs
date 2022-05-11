@@ -7,12 +7,11 @@ public class CloseGate : MonoBehaviour
     GameObject fenceGate;
     Vector3 targetPos;
     private float speed = 1.0f;
-    private bool isClosing;
+    
 
     // Start is called before the first frame update
     void Start()
     {
-        isClosing = false;
         fenceGate = GameObject.Find("Fence Gate");
         targetPos = new Vector3(1.24f, fenceGate.transform.position.y, fenceGate.transform.position.z);
     }
@@ -20,7 +19,7 @@ public class CloseGate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isClosing)
+        if (GameManager.Instance.isGateClosing)
         {
             // Move our position a step closer to the target.
             var step = speed * Time.deltaTime; // calculate distance to move
@@ -32,7 +31,7 @@ public class CloseGate : MonoBehaviour
     private void OnMouseDown()
     {
         Debug.Log("gate");
-        isClosing = true;
+        GameManager.Instance.isGateClosing = true;
         
     }
 }

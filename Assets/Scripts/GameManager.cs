@@ -5,7 +5,8 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     #region Varialbes:  
-    Vector3 entrancePos = new Vector3(-6.9f, 8.68f, -16.65f);
+    //Vector3 entrancePos = new Vector3(-6.9f, 8.68f, -16.65f);
+    GameObject entrance;
     private float grassLimit = 11.0f;
 
     private GameObject dog;
@@ -20,6 +21,9 @@ public class GameManager : MonoBehaviour
     public bool beSheepSelected;
     public Vector3 mouseHitPos;
     public bool haveMousePos;
+    public bool haveDogArrive;
+    public bool isGameStart;
+    public bool isGateClosing;
     
     #endregion
 
@@ -35,6 +39,7 @@ public class GameManager : MonoBehaviour
         // End of new code
         Instance = this;
 
+        entrance = GameObject.Find("Entrance");
         dog = GameObject.Find("Dog1");
         titleObj = GameObject.Find("Title");
 
@@ -42,6 +47,9 @@ public class GameManager : MonoBehaviour
 
         beSheepSelected = false;
         haveMousePos = false;
+        haveDogArrive = false;
+        isGameStart = false;
+        isGateClosing = false;
 
         StartCoroutine(DisableTitleScreen());
         
@@ -60,25 +68,81 @@ public class GameManager : MonoBehaviour
         //Debug.Log(beSheepSelected);
         if (beSheepSelected== true)
         {
-            PointToTarget(selectedSheep);
+            PointToTarget(dog, selectedSheep);
             //beSheepSelected=false;
         }
 
         if (Input.GetMouseButtonDown(0))
         {
+            isGameStart=true;
             mouseHitPos = GetMousePos();
             //Debug.Log("mouseHit: "+ mouseHitPos);
-            haveMousePos=true;
+            if (!isGateClosing)
+            {
+                haveMousePos = true;
+            }else
+            {
+                haveMousePos=false;
+            }
+            
+        }
+
+        // check nearby sheep
+        //if (haveDogArrive)
+        //{
+         //   SheepNearby(dog.transform.position, 1f);
+          //  haveDogArrive=false;
+        //}
+    }
+
+    public bool pathComplete(Vector3 pos1, UnityEngine.AI.NavMeshAgent m_NavAgent)
+    {
+
+        //if (Vector3.Distance(GameManager.Instance.mouseHitPos, m_NavAgent.transform.position) <= 0.2f)
+        if (Vector3.Distance(pos1, m_NavAgent.transform.position) <= 0.5f)
+        {
+            //if (!m_NavAgent.hasPath || m_NavAgent.velocity.sqrMagnitude == 0f)
+            //{
+            //    return true;
+            //}
+            return true;
+        }
+
+        return false;
+    }
+
+    // the animal rotates to face to gate entrance
+    public void PointToGate(Transform transform)
+    {
+        Vector3 relativePos = entrance.transform.position - transform.position;
+        // the second argument, upwards, defaults to Vector3.up
+        Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.up);
+        transform.rotation = Quaternion.Lerp(transform.rotation, rotation, 1f * Time.deltaTime);
+    }
+
+    void SheepNearby(Vector3 center, float radius)
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(center, radius);
+        foreach (var hitCollider in hitColliders)
+        {
+            if (hitCollider.gameObject.name != "Dog1" && 
+                hitCollider.transform.parent.gameObject.name != "Fence Frames")
+            {
+                //Debug.Log("Fence: " + hitCollider.transform.parent.gameObject.name);
+                //Debug.Log("test: " + hitCollider.name);
+                PointToTarget(hitCollider.transform.parent.gameObject, entrance);
+            }
+            
         }
     }
 
-    void PointToTarget(GameObject target)
+    void PointToTarget(GameObject obj, GameObject target)
     {
-        Vector3 relativePos = target.transform.position - dog.transform.position;
+        Vector3 relativePos = target.transform.position - obj.transform.position;
 
         // the second argument, upwards, defaults to Vector3.up
         Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.up);
-        dog.transform.rotation = Quaternion.Lerp(dog.transform.rotation, rotation, 5f*Time.deltaTime);
+        obj.transform.rotation = Quaternion.Lerp(obj.transform.rotation, rotation, 5f*Time.deltaTime);
     }
 
     private void RotateInBoundary(GameObject obj)

@@ -23,6 +23,10 @@ public class SheepController : Animal
     public float movSpeed = 1f; // Define speed that animal moves. This is also used to calculate leg movement speed.
 
     private bool canRotate = true;
+    private GameObject dog;
+    UnityEngine.AI.NavMeshAgent m_NavAgent;
+    private GameObject entrance;
+    private bool haveSheepArrive;
 
     private void Start()
     {
@@ -34,7 +38,10 @@ public class SheepController : Animal
 
         rotSpeed = movSpeed * 4; // Set legs to move relative to animal moving speed.
 
-
+        dog = GameObject.Find("Dog1");
+        m_NavAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        entrance = GameObject.Find("Entrance");
+        haveSheepArrive = false;
 
     }
 
@@ -45,6 +52,38 @@ public class SheepController : Animal
 
         // Wander
         transform.Translate((Vector3.forward * Time.deltaTime) * movSpeed);
+
+        if (m_NavAgent.velocity.sqrMagnitude > Mathf.Epsilon)
+        {
+            m_NavAgent.updateRotation = false;
+            movSpeed = 0f;
+            rotSpeed = movSpeed * 4;
+        }
+        //if (GameManager.Instance.pathComplete(entrance.transform.position, m_NavAgent))
+        //{
+        //    haveSheepArrive = true;
+        //    movSpeed = 1f;
+        //    rotSpeed = movSpeed * 4;
+        //}
+
+        if (!haveSheepArrive)
+        {
+            moveToEntrance();
+        }
+    }
+
+    void moveToEntrance()
+    {
+        if (GameManager.Instance.haveDogArrive)
+        {
+            if (Vector3.Distance(dog.transform.position, transform.position)<2f)
+            {
+                m_NavAgent.SetDestination(entrance.transform.position);
+                movSpeed = 2f;
+                rotSpeed = movSpeed * 4; // Set legs to move relative to animal moving speed.
+                //haveSheepArrive = false;
+            }
+        }
     }
 
     private void OnMouseDown()
@@ -72,27 +111,6 @@ public class SheepController : Animal
         RearLegR.transform.localRotation = Quaternion.Lerp(legAngleFromA, legAngleToA, lerp);
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (!collision.gameObject.CompareTag("Ground") && canRotate) // If the animal collides with something that is not the ground, spin it around.
-        {
-            StartCoroutine(SpinMeRound());
-        }
-    }
-
-    private IEnumerator SpinMeRound()
-    {
-        // Disable option to rotate.
-        canRotate = false;
-
-        // Rotate animal.
-        this.transform.rotation *= Quaternion.Euler(0, moveAngle, 0);
-
-        // Wait...
-        yield return new WaitForSeconds(1f);
-
-        // Enable option to rotate.
-        canRotate = true;
-    }
+    
 }
 
