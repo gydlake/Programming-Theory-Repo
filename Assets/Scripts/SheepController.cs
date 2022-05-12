@@ -29,6 +29,7 @@ public class SheepController : Animal
     private bool haveSheepArrive;
     private bool isWander;
     private AudioSource sheepSound;
+    private bool canSpeak;
 
     private void Start()
     {
@@ -46,6 +47,7 @@ public class SheepController : Animal
         haveSheepArrive = false;
         isWander = true;
         sheepSound = GetComponent<AudioSource>();
+        canSpeak = true;
 
     }
 
@@ -59,53 +61,55 @@ public class SheepController : Animal
         {
             transform.Translate((Vector3.forward * Time.deltaTime) * movSpeed);
         }
-        
 
-        if(Vector3.Distance(entrance.transform.position, m_NavAgent.transform.position) < 2f)
+
+        if (Vector3.Distance(entrance.transform.position, m_NavAgent.transform.position) < 2f)
         {
             haveSheepArrive = true;
             m_NavAgent.updateRotation = false;
             movSpeed = 0f;
             rotSpeed = movSpeed * 4;
-            
+
         }
 
         if (!haveSheepArrive)
         {
-           StartCoroutine(moveToEntrance());
+            StartCoroutine(MoveToEntrance());
         }
     }
 
-    IEnumerator moveToEntrance()
+    IEnumerator MoveToEntrance()
     {
         if (GameManager.Instance.haveDogArrive)
         {
-            
-            if (Vector3.Distance(dog.transform.position, transform.position)<2f)
+
+            if (Vector3.Distance(dog.transform.position, transform.position) < 2f)
             {
                 GameManager.Instance.canBark = true;
 
-                yield return new WaitForSeconds(2f);
+                yield return new WaitForSeconds(1f);
 
                 isWander = false;
+                sheepSound.Play();
+
+                if (canSpeak)
+                {
+                    Speak();
+                    canSpeak = false;
+                }
+
+
                 m_NavAgent.SetDestination(entrance.transform.position);
                 movSpeed = 2f;
                 rotSpeed = movSpeed * 4; // Set legs to move relative to animal moving speed.
-                
-                sheepSound.Play();
-                
+
+
+
             }
         }
     }
 
-    private void OnMouseDown()
-    {
-        //Debug.Log(transform.name);
-        //GameManager.Instance.selectedSheep = transform.gameObject;
-        //GameManager.Instance.beSheepSelected = true;
-        
-    }
-
+    // sheep animation
     private void SheepLegMovement()
     {
         Quaternion legAngleFromA = Quaternion.Euler(this.legStartPosA);         // Set first start angle of leg.
@@ -123,6 +127,11 @@ public class SheepController : Animal
         RearLegR.transform.localRotation = Quaternion.Lerp(legAngleFromA, legAngleToA, lerp);
     }
 
-    
+    override public void Speak()
+    {
+        Debug.Log("The sheep is baaing");
+    }
+
+
 }
 

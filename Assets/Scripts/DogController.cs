@@ -5,16 +5,16 @@ using UnityEngine.AI;
 
 public class DogController : Animal
 {
-    UnityEngine.AI.NavMeshAgent m_NavAgent;
+    NavMeshAgent m_NavAgent;
     Animator anim;
     private GameObject entrance;
     private AudioSource dogBark;
-    
+
 
     // Start is called before the first frame update
     void Start()
     {
-        m_NavAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        m_NavAgent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         entrance = GameObject.Find("Entrance");
         dogBark = GetComponent<AudioSource>();
@@ -33,22 +33,27 @@ public class DogController : Animal
         if (GameManager.Instance.pathComplete(GameManager.Instance.mouseHitPos, m_NavAgent) && GameManager.Instance.isGameStart)
         {
             anim.SetInteger("Walk", 0);
-            
+
 
             GameManager.Instance.PointToTarget(entrance.transform, transform);
             GameManager.Instance.haveDogArrive = true;
-            
+
         }
-        if (GameManager.Instance.canBark)
+        if ((GameManager.Instance.canBark) && (GameManager.Instance.isMouseClick))
         {
             dogBark.Play(); // play dog bark sound
-            GameManager.Instance.canBark = false;
+            Speak();
 
+            GameManager.Instance.canBark = false;
+            GameManager.Instance.isMouseClick = false;
         }
     }
 
-    
+    override public void Speak()
+    {
+        Debug.Log("The dog is barking");
+    }
 
-    
+
 
 }

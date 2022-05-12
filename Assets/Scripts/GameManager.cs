@@ -25,7 +25,12 @@ public class GameManager : MonoBehaviour
     public bool isGameStart;
     public bool isGateClosing;
     public bool canBark;
-    
+    public bool isMouseClick;
+    public bool isGateClosed;
+    private GameObject endObj;
+    private float speed = 200.0f;
+    private Vector3 targetPos;
+
     #endregion
 
     // Start is called before the first frame update
@@ -43,8 +48,12 @@ public class GameManager : MonoBehaviour
         entrance = GameObject.Find("Entrance");
         dog = GameObject.Find("Dog1");
         titleObj = GameObject.Find("Title");
+        endObj = GameObject.Find("EndText");
+        endObj.transform.position = new Vector3(endObj.transform.position.x, -50f, endObj.transform.position.z);
+        targetPos = new Vector3(endObj.transform.position.x, 300f, endObj.transform.position.z);
+        //endObj.transform.position = new Vector3(targetPos.x, -200f, targetPos.z);
 
-        //Debug.Log("sheep 1 pos: " + sheep[1].transform.position);
+        Debug.Log(targetPos);
 
         beSheepSelected = false;
         haveMousePos = false;
@@ -52,62 +61,55 @@ public class GameManager : MonoBehaviour
         isGameStart = false;
         isGateClosing = false;
         canBark = false;
+        isMouseClick = false;
+        isGateClosed = false;
 
         StartCoroutine(DisableTitleScreen());
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        //RotateInBoundary(dog);
-
-        for (int i = 0; i < sheep.Length; i++)
-        {
-            RotateInBoundary(sheep[i]);
-        }
-
-        //Debug.Log(beSheepSelected);
-        if (beSheepSelected== true)
-        {
-            PointToTarget(dog, selectedSheep);
-            //beSheepSelected=false;
-        }
-
         if (Input.GetMouseButtonDown(0))
         {
-            isGameStart=true;
+            isGameStart = true;
+            isMouseClick = true;
+            canBark = false;
+
             mouseHitPos = GetMousePos();
-            //Debug.Log("mouseHit: "+ mouseHitPos);
+
             if (!isGateClosing)
             {
                 haveMousePos = true;
-            }else
-            {
-                haveMousePos=false;
             }
-            
+            else
+            {
+                haveMousePos = false;
+            }
+
         }
 
-        // check nearby sheep
-        //if (haveDogArrive)
-        //{
-         //   SheepNearby(dog.transform.position, 1f);
-          //  haveDogArrive=false;
-        //}
+        // after gate close, show the end text.
+        if (isGateClosed == true)
+        {
+            ShowEndText();
+        }
+    }
+
+    private void ShowEndText()
+    {
+        // Move end text from bottom to the middle of the screen
+        var step = speed * Time.deltaTime; // calculate distance to move
+        endObj.transform.position = Vector3.MoveTowards(endObj.transform.position, targetPos, step);
+        Debug.Log(endObj.transform.position);
     }
 
     public bool pathComplete(Vector3 pos1, UnityEngine.AI.NavMeshAgent m_NavAgent)
     {
-
-        //if (Vector3.Distance(GameManager.Instance.mouseHitPos, m_NavAgent.transform.position) <= 0.2f)
         if (Vector3.Distance(pos1, m_NavAgent.transform.position) <= 0.5f)
         {
-            if (!m_NavAgent.hasPath || m_NavAgent.velocity.sqrMagnitude == 0f)
-            {
-                return true;
-            }
-            //return true;
+            return true;
         }
 
         return false;
@@ -122,68 +124,23 @@ public class GameManager : MonoBehaviour
         transform.rotation = Quaternion.Lerp(transform.rotation, rotation, 1f * Time.deltaTime);
     }
 
-    void SheepNearby(Vector3 center, float radius)
-    {
-        Collider[] hitColliders = Physics.OverlapSphere(center, radius);
-        foreach (var hitCollider in hitColliders)
-        {
-            if (hitCollider.gameObject.name != "Dog1" && 
-                hitCollider.transform.parent.gameObject.name != "Fence Frames")
-            {
-                //Debug.Log("Fence: " + hitCollider.transform.parent.gameObject.name);
-                //Debug.Log("test: " + hitCollider.name);
-                PointToTarget(hitCollider.transform.parent.gameObject, entrance);
-            }
-            
-        }
-    }
-
-    void PointToTarget(GameObject obj, GameObject target)
-    {
-        Vector3 relativePos = target.transform.position - obj.transform.position;
-
-        // the second argument, upwards, defaults to Vector3.up
-        Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.up);
-        obj.transform.rotation = Quaternion.Lerp(obj.transform.rotation, rotation, 5f*Time.deltaTime);
-    }
-
-    private void RotateInBoundary(GameObject obj)
-    {
-        if (obj.transform.position.x >grassLimit || obj.transform.position.x < -grassLimit
-            || obj.transform.position.z > grassLimit || obj.transform.position.z < -grassLimit)
-        {
-            // Rotate animal.
-            obj.transform.rotation *= Quaternion.Euler(0, rotAngleInBoundary, 0);
-        }
-    }
-
     IEnumerator DisableTitleScreen()
     {
         yield return new WaitForSeconds(titleScreenDisplayTime);
         titleObj.SetActive(false);
-
-        StartGame();
-    }
-
-    private void StartGame()
-    {
-
     }
 
     Vector3 GetMousePos()
     {
         Plane plane = new Plane(Vector3.up, 0);
         float distance;
-        Vector3 mousePosition= Vector3.zero;
+        Vector3 mousePosition = Vector3.zero;
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (plane.Raycast(ray, out distance))
         {
             mousePosition = ray.GetPoint(distance);
         }
-        //Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //mousePosition.z += Camera.main.nearClipPlane;
         return mousePosition;
-        //mouseHitPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
 }

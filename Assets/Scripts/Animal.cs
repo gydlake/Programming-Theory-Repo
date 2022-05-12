@@ -31,9 +31,9 @@ public abstract class Animal : MonoBehaviour
 
     }
 
-    public virtual void Talk()
+    public virtual void Speak()
     {
-
+        print("Show the animal's sound");
     }
 
     
