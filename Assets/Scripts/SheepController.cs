@@ -28,6 +28,7 @@ public class SheepController : Animal
     private GameObject entrance;
     private bool haveSheepArrive;
     private bool isWander;
+    private AudioSource sheepSound;
 
     private void Start()
     {
@@ -44,6 +45,7 @@ public class SheepController : Animal
         entrance = GameObject.Find("Entrance");
         haveSheepArrive = false;
         isWander = true;
+        sheepSound = GetComponent<AudioSource>();
 
     }
 
@@ -70,22 +72,27 @@ public class SheepController : Animal
 
         if (!haveSheepArrive)
         {
-            moveToEntrance();
+           StartCoroutine(moveToEntrance());
         }
     }
 
-    void moveToEntrance()
+    IEnumerator moveToEntrance()
     {
         if (GameManager.Instance.haveDogArrive)
         {
             
             if (Vector3.Distance(dog.transform.position, transform.position)<2f)
             {
+                GameManager.Instance.canBark = true;
+
+                yield return new WaitForSeconds(2f);
+
                 isWander = false;
                 m_NavAgent.SetDestination(entrance.transform.position);
                 movSpeed = 2f;
                 rotSpeed = movSpeed * 4; // Set legs to move relative to animal moving speed.
-                //haveSheepArrive = false;
+                
+                sheepSound.Play();
                 
             }
         }

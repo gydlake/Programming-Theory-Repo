@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     public bool haveDogArrive;
     public bool isGameStart;
     public bool isGateClosing;
+    public bool canBark;
     
     #endregion
 
@@ -50,6 +51,7 @@ public class GameManager : MonoBehaviour
         haveDogArrive = false;
         isGameStart = false;
         isGateClosing = false;
+        canBark = false;
 
         StartCoroutine(DisableTitleScreen());
         
@@ -101,11 +103,11 @@ public class GameManager : MonoBehaviour
         //if (Vector3.Distance(GameManager.Instance.mouseHitPos, m_NavAgent.transform.position) <= 0.2f)
         if (Vector3.Distance(pos1, m_NavAgent.transform.position) <= 0.5f)
         {
-            //if (!m_NavAgent.hasPath || m_NavAgent.velocity.sqrMagnitude == 0f)
-            //{
-            //    return true;
-            //}
-            return true;
+            if (!m_NavAgent.hasPath || m_NavAgent.velocity.sqrMagnitude == 0f)
+            {
+                return true;
+            }
+            //return true;
         }
 
         return false;

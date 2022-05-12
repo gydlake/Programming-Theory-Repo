@@ -8,6 +8,7 @@ public class DogController : Animal
     UnityEngine.AI.NavMeshAgent m_NavAgent;
     Animator anim;
     private GameObject entrance;
+    private AudioSource dogBark;
     
 
     // Start is called before the first frame update
@@ -16,6 +17,7 @@ public class DogController : Animal
         m_NavAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         anim = GetComponent<Animator>();
         entrance = GameObject.Find("Entrance");
+        dogBark = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -31,8 +33,17 @@ public class DogController : Animal
         if (GameManager.Instance.pathComplete(GameManager.Instance.mouseHitPos, m_NavAgent) && GameManager.Instance.isGameStart)
         {
             anim.SetInteger("Walk", 0);
+            
+
             GameManager.Instance.PointToTarget(entrance.transform, transform);
             GameManager.Instance.haveDogArrive = true;
+            
+        }
+        if (GameManager.Instance.canBark)
+        {
+            dogBark.Play(); // play dog bark sound
+            GameManager.Instance.canBark = false;
+
         }
     }
 
