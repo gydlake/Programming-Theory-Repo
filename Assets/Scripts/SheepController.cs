@@ -22,11 +22,12 @@ public class SheepController : Animal
     public float moveAngle = 90f; // Define angle the animal turns after a collision.
     public float movSpeed = 1f; // Define speed that animal moves. This is also used to calculate leg movement speed.
 
-    private bool canRotate = true;
+    //private bool canRotate = true;
     private GameObject dog;
     UnityEngine.AI.NavMeshAgent m_NavAgent;
     private GameObject entrance;
     private bool haveSheepArrive;
+    private bool isWander;
 
     private void Start()
     {
@@ -42,6 +43,7 @@ public class SheepController : Animal
         m_NavAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         entrance = GameObject.Find("Entrance");
         haveSheepArrive = false;
+        isWander = true;
 
     }
 
@@ -51,20 +53,20 @@ public class SheepController : Animal
         SheepLegMovement();
 
         // Wander
-        transform.Translate((Vector3.forward * Time.deltaTime) * movSpeed);
-
-        if (m_NavAgent.velocity.sqrMagnitude > Mathf.Epsilon)
+        if (isWander)
         {
+            transform.Translate((Vector3.forward * Time.deltaTime) * movSpeed);
+        }
+        
+
+        if(Vector3.Distance(entrance.transform.position, m_NavAgent.transform.position) < 2f)
+        {
+            haveSheepArrive = true;
             m_NavAgent.updateRotation = false;
             movSpeed = 0f;
             rotSpeed = movSpeed * 4;
+            
         }
-        //if (GameManager.Instance.pathComplete(entrance.transform.position, m_NavAgent))
-        //{
-        //    haveSheepArrive = true;
-        //    movSpeed = 1f;
-        //    rotSpeed = movSpeed * 4;
-        //}
 
         if (!haveSheepArrive)
         {
@@ -76,12 +78,15 @@ public class SheepController : Animal
     {
         if (GameManager.Instance.haveDogArrive)
         {
+            
             if (Vector3.Distance(dog.transform.position, transform.position)<2f)
             {
+                isWander = false;
                 m_NavAgent.SetDestination(entrance.transform.position);
                 movSpeed = 2f;
                 rotSpeed = movSpeed * 4; // Set legs to move relative to animal moving speed.
                 //haveSheepArrive = false;
+                
             }
         }
     }

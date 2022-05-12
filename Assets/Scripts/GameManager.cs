@@ -112,9 +112,9 @@ public class GameManager : MonoBehaviour
     }
 
     // the animal rotates to face to gate entrance
-    public void PointToGate(Transform transform)
+    public void PointToTarget(Transform target, Transform transform)
     {
-        Vector3 relativePos = entrance.transform.position - transform.position;
+        Vector3 relativePos = target.position - transform.position;
         // the second argument, upwards, defaults to Vector3.up
         Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.up);
         transform.rotation = Quaternion.Lerp(transform.rotation, rotation, 1f * Time.deltaTime);
