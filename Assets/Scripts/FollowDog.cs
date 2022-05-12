@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// let camera follow the dog
+
 public class FollowDog : Animal
 {
-    Vector3 CameraDogOffset = new Vector3(-6.9f, 8.5f, -16.1f);
+    Vector3 CameraDogOffset = new Vector3(-5.5f, 8.7f, -15.5f);
 
     private GameObject dog;
 
@@ -12,12 +14,11 @@ public class FollowDog : Animal
     void Start()
     {
         dog = GameObject.Find("Dog1");
-        //Debug.Log(dog.transform.position);
     }
 
     // Update is called once per frame
     void LateUpdate()
     {
-        //transform.position = dog.transform.position + CameraDogOffset;
+        transform.position = dog.transform.position + CameraDogOffset;
     }
 }

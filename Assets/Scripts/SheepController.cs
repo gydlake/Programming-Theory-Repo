@@ -25,11 +25,13 @@ public class SheepController : Animal
     //private bool canRotate = true;
     private GameObject dog;
     UnityEngine.AI.NavMeshAgent m_NavAgent;
-    private GameObject entrance;
+    private GameObject fenceCentre;
     private bool haveSheepArrive;
     private bool isWander;
     private AudioSource sheepSound;
     private bool canSpeak;
+
+    // sheep related control
 
     private void Start()
     {
@@ -43,7 +45,7 @@ public class SheepController : Animal
 
         dog = GameObject.Find("Dog1");
         m_NavAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        entrance = GameObject.Find("Entrance");
+        fenceCentre = GameObject.Find("Fence Centre");
         haveSheepArrive = false;
         isWander = true;
         sheepSound = GetComponent<AudioSource>();
@@ -63,7 +65,7 @@ public class SheepController : Animal
         }
 
 
-        if (Vector3.Distance(entrance.transform.position, m_NavAgent.transform.position) < 2f)
+        if (Vector3.Distance(fenceCentre.transform.position, m_NavAgent.transform.position) < 2f)
         {
             haveSheepArrive = true;
             m_NavAgent.updateRotation = false;
@@ -87,7 +89,7 @@ public class SheepController : Animal
             {
                 GameManager.Instance.canBark = true;
 
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(0.5f);
 
                 isWander = false;
                 sheepSound.Play();
@@ -99,7 +101,7 @@ public class SheepController : Animal
                 }
 
 
-                m_NavAgent.SetDestination(entrance.transform.position);
+                m_NavAgent.SetDestination(fenceCentre.transform.position);
                 movSpeed = 2f;
                 rotSpeed = movSpeed * 4; // Set legs to move relative to animal moving speed.
 
@@ -129,7 +131,7 @@ public class SheepController : Animal
 
     override public void Speak()
     {
-        Debug.Log("The sheep is baaing");
+        Debug.Log("The "+ gameObject.tag+ " is baaing");
     }
 
 

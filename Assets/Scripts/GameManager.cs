@@ -2,60 +2,46 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Game manager to transfer control data between different files.
+
 public class GameManager : MonoBehaviour
 {
     #region Varialbes:  
-    //Vector3 entrancePos = new Vector3(-6.9f, 8.68f, -16.65f);
-    GameObject entrance;
-    private float grassLimit = 11.0f;
+    public static GameManager Instance { get; private set; }
 
-    private GameObject dog;
-    [SerializeField]
-    private GameObject[] sheep;
-
-    private float rotAngleInBoundary = 180f;
     private float titleScreenDisplayTime = 2f;
     private GameObject titleObj;
-    public static GameManager Instance { get; private set; }
-    public GameObject selectedSheep;
-    public bool beSheepSelected;
+    
     public Vector3 mouseHitPos;
     public bool haveMousePos;
     public bool haveDogArrive;
     public bool isGameStart;
     public bool isGateClosing;
-    public bool canBark;
+    public bool canBark; // when the dog arrives the mouse clicked position near a sheep.
     public bool isMouseClick;
     public bool isGateClosed;
-    private GameObject endObj;
-    private float speed = 200.0f;
-    private Vector3 targetPos;
+
+    private GameObject endObj; // the object for end text.
+    private float speed = 200.0f; // the moving up speed of the end text.
+    private Vector3 targetPos; // the target position of the end text.
 
     #endregion
 
     // Start is called before the first frame update
     void Start()
     {
-        // Start of new code
         if (Instance != null)
         {
             Destroy(gameObject);
             return;
         }
-        // End of new code
         Instance = this;
 
-        entrance = GameObject.Find("Entrance");
-        dog = GameObject.Find("Dog1");
         titleObj = GameObject.Find("Title");
         endObj = GameObject.Find("EndText");
         endObj.transform.position = new Vector3(endObj.transform.position.x, -50f, endObj.transform.position.z);
         targetPos = new Vector3(endObj.transform.position.x, 300f, endObj.transform.position.z);
-        //endObj.transform.position = new Vector3(targetPos.x, -200f, targetPos.z);
-
-        Debug.Log(targetPos);
-
-        beSheepSelected = false;
+        
         haveMousePos = false;
         haveDogArrive = false;
         isGameStart = false;
@@ -102,7 +88,6 @@ public class GameManager : MonoBehaviour
         // Move end text from bottom to the middle of the screen
         var step = speed * Time.deltaTime; // calculate distance to move
         endObj.transform.position = Vector3.MoveTowards(endObj.transform.position, targetPos, step);
-        Debug.Log(endObj.transform.position);
     }
 
     public bool pathComplete(Vector3 pos1, UnityEngine.AI.NavMeshAgent m_NavAgent)
@@ -115,7 +100,7 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
-    // the animal rotates to face to gate entrance
+    // the animal rotates to face to target
     public void PointToTarget(Transform target, Transform transform)
     {
         Vector3 relativePos = target.position - transform.position;
@@ -124,7 +109,7 @@ public class GameManager : MonoBehaviour
         transform.rotation = Quaternion.Lerp(transform.rotation, rotation, 1f * Time.deltaTime);
     }
 
-    IEnumerator DisableTitleScreen()
+    IEnumerator DisableTitleScreen() //hide the title text
     {
         yield return new WaitForSeconds(titleScreenDisplayTime);
         titleObj.SetActive(false);

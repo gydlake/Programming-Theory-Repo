@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// close the fence gate after all sheep go inside
+
 public class CloseGate : MonoBehaviour
 {
     GameObject fenceGate;

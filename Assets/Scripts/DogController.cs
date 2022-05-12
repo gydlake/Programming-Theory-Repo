@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+// dog related control
+
 public class DogController : Animal
 {
     NavMeshAgent m_NavAgent;
     Animator anim;
-    private GameObject entrance;
+    private GameObject fenceCentre;
     private AudioSource dogBark;
 
 
@@ -16,7 +18,7 @@ public class DogController : Animal
     {
         m_NavAgent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
-        entrance = GameObject.Find("Entrance");
+        fenceCentre = GameObject.Find("Fence Centre");
         dogBark = GetComponent<AudioSource>();
     }
 
@@ -35,7 +37,8 @@ public class DogController : Animal
             anim.SetInteger("Walk", 0);
 
 
-            GameManager.Instance.PointToTarget(entrance.transform, transform);
+            // let dog face to the fence
+            GameManager.Instance.PointToTarget(fenceCentre.transform, transform);
             GameManager.Instance.haveDogArrive = true;
 
         }

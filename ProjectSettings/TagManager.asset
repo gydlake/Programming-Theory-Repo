@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Sheep
   - Ground
+  - sheep 1
+  - sheep 2
+  - sheep 3
   layers:
   - Default
   - TransparentFX

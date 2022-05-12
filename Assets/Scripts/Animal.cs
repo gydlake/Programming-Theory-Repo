@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// the parent class for the dog and all the sheep
+
 public abstract class Animal : MonoBehaviour
 {
     private string color;

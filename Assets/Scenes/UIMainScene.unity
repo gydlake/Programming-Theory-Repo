@@ -176,7 +176,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2692594753747960197, guid: 9843f84f57901b24989015eec2c123ac, type: 3}
       propertyPath: m_Name
-      value: Sheep 0
+      value: Sheep 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2692594753747960197, guid: 9843f84f57901b24989015eec2c123ac, type: 3}
+      propertyPath: m_TagString
+      value: sheep 1
       objectReference: {fileID: 0}
     - target: {fileID: 4887273878320262335, guid: 9843f84f57901b24989015eec2c123ac, type: 3}
       propertyPath: m_PlayOnAwake
@@ -1957,12 +1961,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a06c84b209c6c874d8b7282996277900, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sheep:
-  - {fileID: 2015033516}
-  - {fileID: 1459829316}
-  - {fileID: 406583111}
-  selectedSheep: {fileID: 0}
-  beSheepSelected: 0
   mouseHitPos: {x: 0, y: 0, z: 0}
   haveMousePos: 0
   haveDogArrive: 0
@@ -1995,7 +1993,7 @@ GameObject:
   m_Component:
   - component: {fileID: 613090438}
   m_Layer: 0
-  m_Name: Entrance
+  m_Name: Fence Centre
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2314,7 +2312,7 @@ GameObject:
   m_Component:
   - component: {fileID: 917530851}
   m_Layer: 0
-  m_Name: Animals
+  m_Name: Sheep
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2416,7 +2414,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.21492095, y: 0.0000018878292, z: -0.000015171308, w: 0.97663146}
-  m_LocalPosition: {x: 0, y: 8.68, z: -21.45}
+  m_LocalPosition: {x: 0, y: 8.7, z: -21.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2785,7 +2783,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2692594753747960197, guid: 9843f84f57901b24989015eec2c123ac, type: 3}
       propertyPath: m_Name
-      value: Sheep 2
+      value: Sheep 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2692594753747960197, guid: 9843f84f57901b24989015eec2c123ac, type: 3}
+      propertyPath: m_TagString
+      value: sheep 3
       objectReference: {fileID: 0}
     - target: {fileID: 2692594753747960197, guid: 9843f84f57901b24989015eec2c123ac, type: 3}
       propertyPath: m_NavMeshLayer
@@ -3198,7 +3200,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2692594753747960197, guid: 9843f84f57901b24989015eec2c123ac, type: 3}
       propertyPath: m_Name
-      value: Sheep 1
+      value: Sheep 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2692594753747960197, guid: 9843f84f57901b24989015eec2c123ac, type: 3}
+      propertyPath: m_TagString
+      value: sheep 2
       objectReference: {fileID: 0}
     - target: {fileID: 2692594753747960197, guid: 9843f84f57901b24989015eec2c123ac, type: 3}
       propertyPath: m_NavMeshLayer
@@ -3511,15 +3517,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4343527246573924, guid: 7451ef01e53127446b9d7406220542f6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.452957
+      value: 5.5
       objectReference: {fileID: 0}
     - target: {fileID: 4343527246573924, guid: 7451ef01e53127446b9d7406220542f6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.036999993
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4343527246573924, guid: 7451ef01e53127446b9d7406220542f6, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5.9392757
+      value: -6
       objectReference: {fileID: 0}
     - target: {fileID: 4343527246573924, guid: 7451ef01e53127446b9d7406220542f6, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3815,11 +3821,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1298084744}
   m_CullTransparentMesh: 1
---- !u!1 &1459829316 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2692594753747960197, guid: 9843f84f57901b24989015eec2c123ac, type: 3}
-  m_PrefabInstance: {fileID: 1230756186}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1459829320 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2692594753747960194, guid: 9843f84f57901b24989015eec2c123ac, type: 3}
@@ -4278,11 +4279,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2015033516 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2692594753747960197, guid: 9843f84f57901b24989015eec2c123ac, type: 3}
-  m_PrefabInstance: {fileID: 206792084}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2015033520 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2692594753747960194, guid: 9843f84f57901b24989015eec2c123ac, type: 3}
