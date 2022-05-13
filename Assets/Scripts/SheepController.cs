@@ -20,7 +20,6 @@ public class SheepController : Animal
 
     // Wander variables.
     private float movSpeed = 1f; // Define speed that animal moves. This is also used to calculate leg movement speed.
-    private float turnSpeed = 1f;
     private float grassLimit = 11f;
 
     //private bool canRotate = true;
@@ -107,7 +106,7 @@ public class SheepController : Animal
 
                 if (canSpeak)
                 {
-                    Speak();
+                    Talk();
                     canSpeak = false;
                 }
 
@@ -139,9 +138,9 @@ public class SheepController : Animal
         RearLegR.transform.localRotation = Quaternion.Lerp(legAngleFromA, legAngleToA, lerp);
     }
 
-    override public void Speak()
+    override public void Talk()
     {
-        Debug.Log("The " + gameObject.tag + " is baaing");
+        Debug.Log("The " + tagName + " is baaing");
     }
 
 

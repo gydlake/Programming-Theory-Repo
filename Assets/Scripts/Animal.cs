@@ -7,7 +7,7 @@ using UnityEngine;
 public abstract class Animal : MonoBehaviour
 {
     private string color;
-    private string givenName;
+    public string tagName { get { return gameObject.tag; } }
     private string description;
     private float age;
     private float speed;
@@ -33,7 +33,7 @@ public abstract class Animal : MonoBehaviour
 
     }
 
-    public virtual void Speak()
+    public virtual void Talk()
     {
         print("Show the animal's sound");
     }

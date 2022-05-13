@@ -45,14 +45,14 @@ public class DogController : Animal
         if ((GameManager.Instance.canBark) && (GameManager.Instance.isMouseClick))
         {
             dogBark.Play(); // play dog bark sound
-            Speak();
+            Talk();
 
             GameManager.Instance.canBark = false;
             GameManager.Instance.isMouseClick = false;
         }
     }
 
-    override public void Speak()
+    override public void Talk()
     {
         Debug.Log("The dog is barking");
     }
