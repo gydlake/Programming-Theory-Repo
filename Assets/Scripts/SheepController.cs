@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+// INHERITANCE
+
 public class SheepController : Animal
 {
     // Leg and body object variables
@@ -138,6 +140,7 @@ public class SheepController : Animal
         RearLegR.transform.localRotation = Quaternion.Lerp(legAngleFromA, legAngleToA, lerp);
     }
 
+    // POLYMORPHISM
     override public void Talk()
     {
         Debug.Log("The " + tagName + " is baaing");

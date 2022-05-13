@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-// dog related control
+// INHERITANCE
 
 public class DogController : Animal
 {
@@ -52,6 +52,7 @@ public class DogController : Animal
         }
     }
 
+    // POLYMORPHISM
     override public void Talk()
     {
         Debug.Log("The dog is barking");
