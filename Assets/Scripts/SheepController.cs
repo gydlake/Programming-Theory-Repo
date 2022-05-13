@@ -4,10 +4,10 @@ using UnityEngine;
 public class SheepController : Animal
 {
     // Leg and body object variables
-    public GameObject FrontLegL;
-    public GameObject FrontLegR;
-    public GameObject RearLegL;
-    public GameObject RearLegR;
+    private GameObject FrontLegL;
+    private GameObject FrontLegR;
+    private GameObject RearLegL;
+    private GameObject RearLegR;
 
     // Leg and body rotation variables
     private Vector3 legStartPosA = new Vector3(10.0f, 0f, 0f);
@@ -19,8 +19,9 @@ public class SheepController : Animal
     private float rotSpeed;
 
     // Wander variables.
-    public float moveAngle = 90f; // Define angle the animal turns after a collision.
-    public float movSpeed = 1f; // Define speed that animal moves. This is also used to calculate leg movement speed.
+    private float movSpeed = 1f; // Define speed that animal moves. This is also used to calculate leg movement speed.
+    private float turnSpeed = 1f;
+    private float grassLimit = 11f;
 
     //private bool canRotate = true;
     private GameObject dog;
@@ -55,13 +56,23 @@ public class SheepController : Animal
 
     private void Update()
     {
+        if (!haveSheepArrive)
+        {
+            SheepLegMovement();
+        }
 
-        SheepLegMovement();
 
         // Wander
         if (isWander)
         {
+            movSpeed = 1f;
             transform.Translate((Vector3.forward * Time.deltaTime) * movSpeed);
+            if (Mathf.Abs(transform.position.x) > grassLimit || Mathf.Abs(transform.position.z) > grassLimit
+                || (transform.position.x > 0 && transform.position.z > -3))
+            {
+                transform.Rotate(Vector3.up, 90f);
+            }
+
         }
 
 
@@ -69,8 +80,8 @@ public class SheepController : Animal
         {
             haveSheepArrive = true;
             m_NavAgent.updateRotation = false;
-            movSpeed = 0f;
-            rotSpeed = movSpeed * 4;
+            m_NavAgent.speed = 0f;
+            rotSpeed = 0;
 
         }
 
@@ -102,8 +113,7 @@ public class SheepController : Animal
 
 
                 m_NavAgent.SetDestination(fenceCentre.transform.position);
-                movSpeed = 2f;
-                rotSpeed = movSpeed * 4; // Set legs to move relative to animal moving speed.
+                m_NavAgent.speed = 2f;
 
 
 
@@ -131,7 +141,7 @@ public class SheepController : Animal
 
     override public void Speak()
     {
-        Debug.Log("The "+ gameObject.tag+ " is baaing");
+        Debug.Log("The " + gameObject.tag + " is baaing");
     }
 
 
